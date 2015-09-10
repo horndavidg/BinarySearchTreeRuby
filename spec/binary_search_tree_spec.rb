@@ -28,7 +28,7 @@ describe BinarySearchTree do
       tree.insert(1)
       expect(tree.size).to eq(2)
       tree.insert(3).insert(4).insert(0)
-      binding.pry
+      # binding.pry
       expect(tree.size).to eq(5)
     end
   end

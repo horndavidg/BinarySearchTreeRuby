@@ -89,17 +89,49 @@ class BinarySearchTree
     end
 
     def find_internal(value, node)
-    end
+      # p node.right.value
+       p self.size
 
-    def delete_internal(value, node)
+      # if node.value === value
+      #   return node
+      # end
+      
+      a = node.right
+      b = node.left
+      i = 0
+      
+      for i in 0..self.size
+      
+      if !a.value
+       a = node 
+      elsif a.value === value
+        return a
+      else
+        node = node.right
+      end
+      
+      if !b.value
+      b = node
+      elsif b.value === value
+        return b
+      
+      else
+        node = node.left
+  
+      end
+      i += 1
+      end
     end
+  
+
+    # def delete_internal(value, node)
+    # end
+
 end
-
-
 #### Example usage
-# tree = BinarySearchTree.new
-# tree.insert("galvanize").insert("apple").insert("pie").insert("pizza").insert("pi")
+ tree = BinarySearchTree.new
+ tree.insert("galvanize").insert("apple").insert("pie").insert("pizza").insert("pi")
 # puts tree.to_s
-# tree.size  #should equal 5
-# tree.find("apple") #should return "apple"
+# p tree.size  #should equal 5
+ p tree.find("pi") #should return "apple"
 # tree.find("apples")  # should return nil
