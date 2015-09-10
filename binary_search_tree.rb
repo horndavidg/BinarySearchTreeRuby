@@ -38,12 +38,17 @@ class BinarySearchTree
   end
 
   def find(value)
-    node = find_internal(value, @root)
-    node.nil? ? nil : node.value
+    nodes = find_internal(value, @root)
+    nodes.nil? ? nil : nodes[:node].value
   end
 
   def delete(value)
-    delete_internal(value, @root)
+    nodes = find_internal(value, @root)
+    if nodes.nil?
+      nil
+    else
+      delete_internal(nodes[:node], nodes[:parent])
+    end 
   end
 
   private
@@ -88,46 +93,107 @@ class BinarySearchTree
       end
     end
 
-    def find_internal(value, node)
-      # p node.right.value
-       p self.size
+    # My first attempt at find_interval:
+    
+    # def find_internal(value, node)
+    #   # p node.right.value
+    #    p self.size
 
-      # if node.value === value
-      #   return node
-      # end
+    #   # if node.value === value
+    #   #   return node
+    #   # end
       
-      a = node.right
-      b = node.left
-      i = 0
+    #   a = node.right
+    #   b = node.left
+    #   i = 0
       
-      for i in 0..self.size
+    #   for i in 0..self.size
       
-      if !a.value
-       a = node 
-      elsif a.value === value
-        return a
-      else
-        node = node.right
-      end
+    #   if !a.value
+    #    a = node 
+    #   elsif a.value === value
+    #     return a
+    #   else
+    #     node = node.right
+    #   end
       
-      if !b.value
-      b = node
-      elsif b.value === value
-        return b
+    #   if !b.value
+    #   b = node
+    #   elsif b.value === value
+    #     return b
       
-      else
-        node = node.left
+    #   else
+    #     node = node.left
   
+    #   end
+    #   i += 1
+    #   end
+
+    def find_internal(value, node, parent=nil)
+      if node.nil?
+        nil
+      elsif value == node.value
+        {node: node, parent: parent}
+      elsif value < node.value
+        find_internal(value, node.left, node)
+      else
+        find_internal(value, node.right, node)
       end
-      i += 1
+    end
+
+    def find_next(node)
+      return nil if node.nil? or node.right.nil?
+      parent = node
+      next_node = node.right
+
+      until next_node.left.nil?
+        next_node = next_node.left
+        parent = next_node
       end
+      {node: next_node, parent: parent}
     end
   
 
-    # def delete_internal(value, node)
-    # end
 
+    def delete_internal(node, parent)
+      if node.nil?
+        return nil
+      elsif node.left.nil? and node.right.nil?
+        if parent.nil?
+          @root = nil
+        else
+          parent.left = nil if parent.left == node
+          parent.right = nil if parent.right == node
+        end
+      elsif node.left.nil? or node.right.nil?
+        subtree = node.left if node.right.nil?
+        subtree = node.right if node.left.nil?
+        if parent.nil?
+          @root = subtree
+        else
+          parent.left = subtree if parent.left == node
+          parent.right = subtree if parent.right == node
+        end
+      else
+        nodes = find_next(node)
+        nodes[:parent] = nil if nodes[:parent].left == nodes[:node]
+        if parent.nil?
+          @root = nodes[:node]
+        else
+          parent.right = nodes[:node] if parent.right == node
+          parent.left = nodes[:node] if parent.left == node
+        end
+      end
+
+      @size -= 1
+      node.value
+
+    end
 end
+
+
+
+
 #### Example usage
  tree = BinarySearchTree.new
  tree.insert("galvanize").insert("apple").insert("pie").insert("pizza").insert("pi")
@@ -135,3 +201,7 @@ end
 # p tree.size  #should equal 5
  p tree.find("pi") #should return "apple"
 # tree.find("apples")  # should return nil
+
+# tree = BinarySearchTree.new
+# tree.insert("test").insert("tim").insert("candy").insert("zoo")
+# puts tree.find("test")
