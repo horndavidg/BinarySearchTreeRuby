@@ -197,11 +197,12 @@ end
 #### Example usage
  tree = BinarySearchTree.new
  tree.insert("galvanize").insert("apple").insert("pie").insert("pizza").insert("pi")
-# puts tree.to_s
+ puts tree.to_s
 # p tree.size  #should equal 5
- p tree.find("pi") #should return "apple"
+# p tree.find("pi") #should return "apple"
 # tree.find("apples")  # should return nil
-
 # tree = BinarySearchTree.new
 # tree.insert("test").insert("tim").insert("candy").insert("zoo")
 # puts tree.find("test")
+p tree.delete("apple")
+
