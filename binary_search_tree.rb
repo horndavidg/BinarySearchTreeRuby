@@ -91,6 +91,42 @@ class BinarySearchTree
       end
     end
 
+    # My first attempt at find_interval:
+    
+    # def find_internal(value, node)
+    #   # p node.right.value
+    #    p self.size
+
+    #   # if node.value === value
+    #   #   return node
+    #   # end
+      
+    #   a = node.right
+    #   b = node.left
+    #   i = 0
+      
+    #   for i in 0..self.size
+      
+    #   if !a.value
+    #    a = node 
+    #   elsif a.value === value
+    #     return a
+    #   else
+    #     node = node.right
+    #   end
+      
+    #   if !b.value
+    #   b = node
+    #   elsif b.value === value
+    #     return b
+      
+    #   else
+    #     node = node.left
+  
+    #   end
+    #   i += 1
+    #   end
+
     def find_internal(value, node, parent=nil)
       if node.nil?
         nil
@@ -112,9 +148,10 @@ class BinarySearchTree
         parent = next_node
         next_node = next_node.left
       end
-
       {node: next_node, parent: parent}
     end
+  
+
 
     def delete_internal(node, parent)
       if node.nil?
@@ -160,14 +197,17 @@ class BinarySearchTree
 end
 
 
-#### Example usage
-# tree = BinarySearchTree.new
-# tree.insert("galvanize").insert("apple").insert("pie").insert("pizza").insert("pi")
-# puts tree.to_s
-# tree.size  #should equal 5
-# tree.find("apple") #should return "apple"
-# tree.find("apples")  # should return nil
 
+
+#### Example usage
+ tree = BinarySearchTree.new
+ tree.insert("galvanize").insert("apple").insert("pie").insert("pizza").insert("pi")
+ puts tree.to_s
+# p tree.size  #should equal 5
+# p tree.find("pi") #should return "apple"
+# tree.find("apples")  # should return nil
 # tree = BinarySearchTree.new
 # tree.insert("test").insert("tim").insert("candy").insert("zoo")
 # puts tree.find("test")
+p tree.delete("apple")
+
